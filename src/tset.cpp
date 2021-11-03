@@ -112,7 +112,7 @@ TSet TSet::operator+(const int Elem) // объединение с элемент
     return res;
 }
 
-TSet TSet::operator-(const int Elem) // разность с элементом
+TSet TSet::operator-(const int Elem) // разность с элементов
 {
     if (Elem < 0 || Elem >= MaxPower)
     {

@@ -7,11 +7,23 @@ TEST(TBitField, can_create_bitfield_with_positive_length)
   ASSERT_NO_THROW(TBitField bf(3));
 }
 
+TEST(TBitField, can_create_bitfield_by_coping)
+{
+    ASSERT_NO_THROW(TBitField(TBitField(3)));
+}
+
 TEST(TBitField, can_get_length)
 {
   TBitField bf(3);
 
   EXPECT_EQ(3, bf.GetLength());
+}
+
+TEST(TBitField, can_get_bit)
+{
+    TBitField bf(10);
+
+    ASSERT_NO_THROW(TBitField(3));
 }
 
 TEST(TBitField, new_bitfield_is_set_to_zero)
@@ -37,6 +49,18 @@ TEST(TBitField, can_set_bit)
   EXPECT_NE(0, bf.GetBit(3));
 }
 
+TEST(TBitField, can_set_bit_in_copied_bitfield)
+{
+    TBitField bf(10);
+    TBitField bf2(bf);
+    
+    EXPECT_EQ(0, bf2.GetBit(3));
+
+    bf2.SetBit(3);
+    EXPECT_NE(0, bf2.GetBit(3));
+
+}
+
 TEST(TBitField, can_clear_bit)
 {
   TBitField bf(10);
@@ -53,6 +77,11 @@ TEST(TBitField, can_clear_bit)
 TEST(TBitField, throws_when_create_bitfield_with_negative_length)
 {
   ASSERT_ANY_THROW(TBitField bf(-3));
+}
+
+TEST(TBitField, thows_when_coping_bitfield_with_neagative_length)
+{
+    ASSERT_ANY_THROW(TBitField(TBitField(-3)));
 }
 
 TEST(TBitField, throws_when_set_bit_with_negative_index)
@@ -249,6 +278,23 @@ TEST(TBitField, can_invert_large_bitfield)
   expNegBf.ClrBit(35);
 
   EXPECT_EQ(expNegBf, negBf);
+}
+
+TEST(TBitField, can_compare_bitfields_of_the_equal_size)
+{
+    TBitField bf(10);
+    TBitField bf2 = bf;
+
+    EXPECT_EQ(true, bf == bf2);
+    EXPECT_NE(true, bf2 != bf);
+}
+
+TEST(TBitField, can_compare_bitfields_of_the_not_equal_size)
+{
+    TBitField bf(10), bf2(5);
+
+    EXPECT_EQ(false, bf == bf2);
+    EXPECT_NE(false, bf != bf2);
 }
 
 TEST(TBitField, invert_plus_and_operator_on_different_size_bitfield)

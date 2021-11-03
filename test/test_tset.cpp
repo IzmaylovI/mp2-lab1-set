@@ -134,6 +134,41 @@ TEST(TSet, can_insert_non_existing_element_using_plus_operator)
   EXPECT_NE(0, updatedSet.IsMember(k));
 }
 
+TEST(Tset, can_crate_tset_using_symmetrix_difference)
+{
+	const int size = 6;
+	TSet set(6), bf(6);
+
+	TSet result(6);
+	result.InsElem(0);
+	result.InsElem(2);
+	result.InsElem(3);
+	// result 101100
+
+	set.InsElem(0);
+	set.InsElem(5);
+	//set 100001
+
+	bf.InsElem(3);
+	bf.InsElem(5);
+	bf.InsElem(2);
+	//bf  001101
+
+	TSet uppdateSet = set + bf;
+	// uppdateSet  101101
+
+	TSet uppdateSet2 = set * bf;
+	// uppdateSet2 000001
+
+	uppdateSet2 = ~uppdateSet2;
+	// uppdateSet2 111110
+
+	uppdateSet2 = uppdateSet * uppdateSet2;
+	// uppdateSet2 101100
+
+	EXPECT_EQ(result, uppdateSet2);
+}
+
 TEST(TSet, throws_when_insert_non_existing_element_out_of_range_using_plus_operator)
 {
   const int size = 4;

@@ -41,7 +41,7 @@ int TSet::IsMember(const int Elem) const // элемент множества?
 {
     if ((Elem < 0) || (Elem >= MaxPower))
     {
-        throw exception();
+        throw "IsMember: array out of bounds";
     }
 
     return BitField.GetBit(Elem);
@@ -51,7 +51,7 @@ void TSet::InsElem(const int Elem) // включение элемента мно
 {
         if ((Elem < 0) || (Elem >= MaxPower))
         {
-            throw exception();
+            throw "InsElem: array out of bounds";
         }
     
 
@@ -65,7 +65,7 @@ void TSet::DelElem(const int Elem) // исключение элемента мн
 {
     if ((Elem < 0) || (Elem >= MaxPower))
     {
-        throw exception();
+        throw "DelElem: array out of bounds";
     }
 
     if (IsMember(Elem))
@@ -91,7 +91,7 @@ int TSet::operator==(const TSet& s) const // сравнение
 
 int TSet::operator!=(const TSet& s) const // сравнение
 {
-    return((MaxPower != s.MaxPower) || (BitField != s.BitField));
+    return (!(*this == s));
 }
 
 TSet TSet::operator+(const TSet& s) // объединение
@@ -103,7 +103,7 @@ TSet TSet::operator+(const int Elem) // объединение с элемент
 {
     if (Elem < 0 || Elem >= MaxPower)
     {
-        throw exception();
+        throw "operator+: array out of bounds";
     }
 
     TSet res(*this);
@@ -116,7 +116,7 @@ TSet TSet::operator-(const int Elem) // разность с элементов
 {
     if (Elem < 0 || Elem >= MaxPower)
     {
-        throw exception();
+        throw "operator-: array out of bounds";
     }
 
     TSet res(*this);

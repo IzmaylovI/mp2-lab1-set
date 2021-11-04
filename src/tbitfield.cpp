@@ -15,7 +15,7 @@ TBitField::TBitField(int len)
 {
 	if (len < 0)
 	{
-		throw exception("Negative value");
+		throw "Negative TBitField length";
 	}
 
 	BitLen = len;
@@ -49,7 +49,7 @@ int TBitField::GetMemIndex(const int n) const // индекс Мем для би
 {
 	if (n < 0 || n >= BitLen)
 	{
-		throw std::exception();
+		throw "GetMemIndex: array out of bounds";
 	}
 	return n / BITS_IN_ONE_MEM;
 }
@@ -58,7 +58,7 @@ TELEM TBitField::GetMemMask(const int n) const // битовая маска дл
 {
 	if (n < 0 || n >= BitLen)
 	{
-		throw std::exception();
+		throw "GetMemIndex const: array out of bounds";
 	}
 	TELEM Mask = 1;
 
@@ -78,10 +78,10 @@ void TBitField::SetBit(const int n) // установить бит
 {
 	if (n < 0 || n >= BitLen)
 	{
-		throw exception();
+		throw "SetBit: array out of bounds";
 	}
 	
-	const int k = n / BITS_IN_ONE_MEM; // номер байта pMem, в котором необходимо установить бит
+	const int k = GetMemIndex(n); // номер байта pMem, в котором необходимо установить бит
 
 	pMem[k] |= GetMemMask(n);
 }
@@ -90,22 +90,22 @@ void TBitField::ClrBit(const int n) // очистить бит
 {
 		if (n < 0 || n >= BitLen)
 		{
-			throw exception();
+			throw "ClrBit: array out of bounds";
 		}
 		
-		const int k = n / BITS_IN_ONE_MEM;
+		const int k = GetMemIndex(n);
 	    pMem[k] &= ~GetMemMask(n);
 }
 
 ///????????
 int TBitField::GetBit(const int n) const // получить значение бита
 {
-	if (n < 0)
+	if (n < 0 || n >= BitLen)
 	{
-		throw "Incorrect value";;
+		throw "GetBit: array out of bounds";
 	}
 
-	const int k = n / BITS_IN_ONE_MEM;
+	const int k = GetMemIndex(n);
 	
 	return static_cast<bool>(pMem[k] & GetMemMask(n));
 }
@@ -160,23 +160,7 @@ int TBitField::operator==(const TBitField& bf) const // сравнение
 
 int TBitField::operator!=(const TBitField& bf) const // сравнение
 {
-	int k = 0;
-	if (BitLen != bf.BitLen)
-	{
-		k = 1;
-	}
-	else {
-		for (int i = 0; k != 1 && i < MemLen; i++)
-		{
-			if (pMem[i] != bf.pMem[i])
-			{
-				k = 1;
-			}
-		}
-
-	}
-
-	return k;
+	return (!(bf == *this ));
 }
 
 TBitField TBitField::operator|(const TBitField& bf) // операция "или"
@@ -251,7 +235,6 @@ istream& operator>>(istream& in, TBitField& bf) // ввод
 				bf.SetBit(i++);
 			}
 		}
-		i++;
 	}
 
 	return in;

@@ -154,7 +154,7 @@ ostream& operator<<(ostream& out, const TSet& s) // вывод
 {
     for (int i = 0; i < s.MaxPower; i++)
     {
-        s.BitField.GetBit(i);
+        cout << s.BitField.GetBit(i) << ' ';
     }
 
     return out;

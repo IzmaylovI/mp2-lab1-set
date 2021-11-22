@@ -154,7 +154,14 @@ ostream& operator<<(ostream& out, const TSet& s) // вывод
 {
     for (int i = 0; i < s.MaxPower; i++)
     {
-        cout << s.BitField.GetBit(i) << ' ';
+        if (s.IsMemBer(i))
+        {
+            cout << i;
+        }
+        if (i + 1 < s.MaxPower)
+        {
+            cout << " ";
+        }
     }
 
     return out;
